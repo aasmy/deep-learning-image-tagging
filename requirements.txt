@@ -1,0 +1,10 @@
+# Install torch and torchvision separately following https://pytorch.org/get-started/locally/
+# They depend on your machine's CPU/CUDA setup.
+numpy
+pillow
+matplotlib
+scikit-learn
+pycocotools
+pyyaml
+tqdm
+pytest
