@@ -9,7 +9,9 @@ from torch.utils.data import Dataset
 
 class NUSWIDEDataset(Dataset):
 
-    def __init__(self, root, images_file, labels_file, transform=None):
+    def __init__(self, root, images_file, labels_file,
+                 transform=None, indices=None):
+
         self.root = Path(root)
         self.transform = transform
 
@@ -24,6 +26,10 @@ class NUSWIDEDataset(Dataset):
 
         if len(self.image_paths) != len(self.labels):
             raise ValueError("Image and label counts do not match")
+
+        if indices is not None:
+            self.image_paths = [self.image_paths[i] for i in indices]
+            self.labels = self.labels[indices]
 
     def __len__(self):
         return len(self.image_paths)
