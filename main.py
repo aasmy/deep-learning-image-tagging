@@ -1,16 +1,35 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from torch.utils.data import DataLoader
+from torchvision import transforms
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from src.data.dataset import NUSWIDEDataset
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225]
+    )
+])
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+dataset = NUSWIDEDataset(
+    root="data/raw/NUS-WIDE",
+    images_file="database_img.txt",
+    labels_file="database_label_onehot.txt",
+    transform=transform
+)
+
+loader = DataLoader(
+    dataset,
+    batch_size=16,
+    shuffle=True,
+    num_workers=0
+)
+
+images, labels = next(iter(loader))
+
+print("Images:", images.shape)
+print("Labels:", labels.shape)
+print("Labels example:", labels[0])
